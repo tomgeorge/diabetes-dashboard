@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+build:
+  artifacts:
+    - image: quay.io/tgeorge/diabetes-dashboard-vue-dev
+      docker:
+        dockerfile: Dockerfile.dev
+      sync:
+        manual:
+        - src: "**/*.js"
+          dest: "/src/app"
+        - src: "**/*.vue"
+          dest: "/src/app"
+        - src: "**/*.html"
+          dest: "/src/app"
+metadata:
+  name: diabetes-dashboard-vue
+deploy:
+  kubectl:
+    manifests:
+    - k8s/dev-deployment.yaml
+    - k8s/dev-service.yaml
+    - k8s/dev-ingress.yaml

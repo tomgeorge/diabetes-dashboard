@@ -1,0 +1,7 @@
+clusterSize: 1
+couchdbConfig:
+  couchdb:
+    uuid: 81d62c8dc2a843a88845431c899e9c6b
+createAdminSecret: true
+persistentVolume:
+  enabled: true

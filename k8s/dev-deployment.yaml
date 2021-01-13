@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: diabetes-dashboard-stage
+  namespace: diabetes-dashboard-stage
+  labels:
+    app: diabetes-dashboard-stage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: diabetes-dashboard-stage
+  template:
+    metadata:
+      labels:
+        app: diabetes-dashboard-stage
+    spec:
+      containers:
+      - name: diabetes-dashboard-vue
+        image: quay.io/tgeorge/diabetes-dashboard-vue-dev
