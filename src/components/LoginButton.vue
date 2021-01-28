@@ -1,6 +1,6 @@
 <template>
   <div class="login-button">
-    <button class="button is-primary" id="login" v-on:click="login">Log into Dexcom</button>
+    <PrimaryButton @click="login">Log into Dexcom</PrimaryButton>
     <span v-if="wasRedirected">I was redirected</span>
   </div>
 </template>

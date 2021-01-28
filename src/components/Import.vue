@@ -1,23 +1,19 @@
 <template>
-  <div class="import">
+  <div id="import" class="container mx-auto">
     <h3>Import some data homes</h3>
-    <div class="columns">
-      <div class="column">
-        <h3>Choose start date</h3>
-        <v-date-picker v-model="startDate" id="start" class="mt-4" />
-      </div>
-      <div class="column">
-        <h3>Choose end date</h3>
-        <v-date-picker v-model="endDate" id="end" />
-      </div>
+    <div id="end-date">
+      <h3>Choose start date</h3>
+      <input type="date"  v-model="startDate"/>
     </div>
-    <v-data-table
-      :headers="headers"
-      :items="bloodSugars"
-      :items-per-page="10"
-      class="elevation-1"
-    ></v-data-table>
-    <button class="button is-primary" id="search" v-on:click="search">Search for blood sugar data</button>
+    <div>
+      <h3>Choose end date</h3>
+      <input type="date" v-model="endDate"/>
+    </div>
+    <div class="py-4" v-if="bloodSugarCount > 0">
+      <p>Found {{ bloodSugarCount }} records. Proceed?</p>
+      <PrimaryButton @click="importRange">Proceed</PrimaryButton>
+    </div>
+    <PrimaryButton @click="search">Search for blood sugar data</PrimaryButton>
   </div>
 </template>
 
@@ -28,33 +24,14 @@ export default {
     return {
       startDate: new Date().toISOString().substr(0, 10),
       endDate: new Date().toISOString().substr(0, 10),
-      headers: [{
-        text: 'System Time',
-        align: 'start',
-        value: 'systemTime'
-      }, 
-        { text: 'Display Time', value: 'displayTime' }, 
-        { text: 'Blood Sugar Value', value: 'value' },
-        { text: 'Realtime Value', value: 'realtimeValue' },
-        { text: 'Smoothed Value', value: 'smoothedValue' },
-        { text: 'Status', value: 'status' },
-        { text: 'Trend', value: 'trend' },
-        { text: 'Trend Rate', value: 'trendRate' }
-      ],
-      bloodSugars: [
-      ]
+      bloodSugarCount: 0, 
     }
-  },
-  computed: {
-    hasBloodSugars: function() {
-      console.log('computing hasBloodSugars');
-      return this.bloodSugars.length > 0;
-    } 
   },
   methods: {
     // TODO: Check if token is in local storage and error out if it isn't there
+    // Or should this propogate up and tell the user to log in?
     search: function() {
-      console.log('Searching for some blood sugarz ' + this.startDate + ' end ' + this.endDate);
+      const self = this;
       axios.get(`${process.env.VUE_APP_API_URL}/dexcom/blood-sugars`, 
         {
           headers: {
@@ -66,15 +43,28 @@ export default {
             end_date: this.endDate
           }
         }).then((response) => {
-          console.log('Got blood sugars from server');
-          const returnedBloodSugars = response.data['egvs'];
-          self.bloodSugars = returnedBloodSugars;
-          console.log(self.bloodSugars);
+          self.bloodSugarCount = response.data['count'];
         }).catch((error) => {
+          // This will put something on the error channel hopefully
           console.log('oopsie', JSON.stringify(error));
         });
-    }
+    },
+    importRange: function() {
+      const self = this;
+      axios.post(`${process.env.VUE_APP_API_URL}/dexcom/import-range`, 
+        { start_date: self.startDate, end_date: self.endDate },
+        { 
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.accessToken,
+          },
+        })
+        .then((response) => {
+          console.log('success' + response);
+        })
+        .catch((error) => {
+          console.log('failure' + error);
+        })
+    },
   }
-
 }
 </script>

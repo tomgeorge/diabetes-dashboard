@@ -3,7 +3,8 @@
     <div id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> | 
-      <router-link to="/import">Import</router-link>
+      <router-link to="/import">Import</router-link> |
+      <router-link to="/tailwind-examples"> Mess around with components here</router-link>
       <Redirect @received-access-code="onReceivedAccessCode" @error-getting-access-token="onErrorGettingAccessToken" />
       <div v-if="accessCodeError && !accessCodeErrorAcknowledged" class="notification is-danger">
         <button class="delete" @click="acknowledgeError"></button>

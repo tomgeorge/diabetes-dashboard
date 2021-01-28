@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Import from '../components/Import.vue'
+import Scratch from '../components/Scratch.vue'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,11 @@ const routes = [
     name: 'Import',
     component: Import,
     props: {accessToken: parent.accessToken}
+  },
+  {
+    path: '/tailwind-examples',
+    name: 'Scratch',
+    component: Scratch,
   }
 ]
 

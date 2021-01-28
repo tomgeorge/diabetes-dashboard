@@ -1,14 +1,12 @@
 <template>
-  <div class="home">
-    <nav class="level">
-      <div class="level-item">
+  <div class="home container mx-auto">
+      <div>
         Blood sugar density
         <BloodSugarDensity v-if="hasBloodSugars" v-bind:bloodSugars="bloodSugars"/>
         <BloodSugarHistogram v-if="hasBloodSugars" v-bind:bloodSugars="bloodSugars"/>
         <progress v-else class="progress is-small is-primary" max="100">15%</progress>
         <progress class="progress is-small is-primary" max="100">15%</progress>
       </div>
-    </nav>
     <LoginButton />
   </div>
 </template>

@@ -8,7 +8,6 @@ export default {
     /** returns true when the access token is not empty */
     receivedAccessToken: () => {
       return this.accessToken != '';
-      console.log('unreachable do i get an error plz');
     }
   },
   data: () => {
